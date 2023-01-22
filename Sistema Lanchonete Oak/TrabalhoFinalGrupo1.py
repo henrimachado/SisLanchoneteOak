@@ -73,12 +73,19 @@ while (sair_sistema == 2):
             ie_cliente = int(
                 input("Inscrição estadual ([0] se não possuir): "))
             data_cadastro = dataAtual()
+            try:
+                with open("clientes.csv", 'a', encoding='utf-8') as clientes:
+                    clientes_writer = csv.writer(
+                        clientes, delimiter=';', lineterminator='\r')
+                    clientes_writer.writerow([codigo_cliente, nome_cliente, endereco_cliente,
+                                              telefone_cliente, data_cadastro, tipo_cliente, cadastro_cliente, ie_cliente])
+            except PermissionError as error:
+                print("Erro de I/O")
+                sair_sistema = 1
 
-            with open("clientes.csv", 'a', encoding='utf-8') as clientes:
-                clientes_writer = csv.writer(
-                    clientes, delimiter=';', lineterminator='\r')
-                clientes_writer.writerow([codigo_cliente, nome_cliente, endereco_cliente,
-                                          telefone_cliente, data_cadastro, tipo_cliente, cadastro_cliente, ie_cliente])
+            except:
+                print("Erro de I/O")
+                sair_sistema = 1
 
         # Cadastro de fornecedores no sistema com salvamento direto no arquivo csv
         case "2":
@@ -90,11 +97,19 @@ while (sair_sistema == 2):
             cadastro_fornecedor = input("CNPJ: ")
             representante_fornecedor = input("Representante: ")
 
-            with open("fornecedores.csv", 'a', encoding='utf-8') as fornecedores:
-                fornecedores_writer = csv.writer(
-                    fornecedores, delimiter=';', lineterminator='\r')
-                fornecedores_writer.writerow(
-                    [codigo_fornecedor, nome_fornecedor, endereco_fornecedor, telefone_fornecedor, cadastro_fornecedor, representante_fornecedor])
+            try:
+                with open("fornecedores.csv", 'a', encoding='utf-8') as fornecedores:
+                    fornecedores_writer = csv.writer(
+                        fornecedores, delimiter=';', lineterminator='\r')
+                    fornecedores_writer.writerow(
+                        [codigo_fornecedor, nome_fornecedor, endereco_fornecedor, telefone_fornecedor, cadastro_fornecedor, representante_fornecedor])
+
+            except PermissionError as error:
+                print("Erro de I/O")
+                sair_sistema = 1
+            except:
+                print("Erro de I/O")
+                sair_sistema = 1
 
         # Cadastro de produtos no sistema com salvamento direto no arquivo csv
         case "3":
@@ -106,11 +121,20 @@ while (sair_sistema == 2):
             valor_custo = float(input("Valor de custo (R$): "))
             percentual_lucro = int(input("Percentual de lucro: "))
 
-            with open("produtos.csv", 'a', encoding='utf-8') as produtos:
-                produtos_writer = csv.writer(
-                    produtos, delimiter=';', lineterminator='\r')
-                produtos_writer.writerow(
-                    [codigo_produto, descricao_produto, estoque_min, estoque_disponivel, valor_custo, percentual_lucro])
+            try:
+                with open("produtos.csv", 'a', encoding='utf-8') as produtos:
+                    produtos_writer = csv.writer(
+                        produtos, delimiter=';', lineterminator='\r')
+                    produtos_writer.writerow(
+                        [codigo_produto, descricao_produto, estoque_min, estoque_disponivel, valor_custo, percentual_lucro])
+
+            except PermissionError as error:
+                print("Erro de I/O")
+                sair_sistema = 1
+
+            except:
+                print("Erro de I/O")
+                sair_sistema = 1
 
         # Cadastro de vendas no sistema com salvamento direto do arquivo csv
         case "4":
@@ -124,11 +148,20 @@ while (sair_sistema == 2):
                 codigo_cliente = int(input("Código do cliente: "))
             else:
                 codigo_cliente = None
-            with open("vendas.csv", 'a', encoding='utf-8') as vendas:
-                vendas_writer = csv.writer(
-                    vendas, delimiter=';', lineterminator='\r')
-                vendas_writer.writerow(
-                    [codigo_cliente, data_venda, codigo_produto, quantidade, modo_pagamento])
+
+            try:
+                with open("vendas.csv", 'a', encoding='utf-8') as vendas:
+                    vendas_writer = csv.writer(
+                        vendas, delimiter=';', lineterminator='\r')
+                    vendas_writer.writerow(
+                        [codigo_cliente, data_venda, codigo_produto, quantidade, modo_pagamento])
+
+            except PermissionError as error:
+                print("Erro de I/O")
+                sair_sistema = 1
+            except:
+                print("Erro de I/O")
+                sair_sistema = 1
 
         # Cadastro de compras no sistema com salvamento direto do arquivo csv
         case "5":
@@ -139,11 +172,19 @@ while (sair_sistema == 2):
             codigo_produto = int(input("Código do produto: "))
             quantidade = int(input("Quantidade: "))
 
-            with open("compras.csv", 'a', encoding='utf-8') as compras:
-                compras_writer = csv.writer(
-                    compras, delimiter=';', lineterminator='\r')
-                compras_writer.writerow(
-                    [nota_fiscal, codigo_fornecedor, data_compra, codigo_produto, quantidade])
+            try:
+                with open("compras.csv", 'a', encoding='utf-8') as compras:
+                    compras_writer = csv.writer(
+                        compras, delimiter=';', lineterminator='\r')
+                    compras_writer.writerow(
+                        [nota_fiscal, codigo_fornecedor, data_compra, codigo_produto, quantidade])
+
+            except PermissionError as error:
+                print("Erro de I/O")
+                sair_sistema = 1
+            except:
+                print("Erro de I/O")
+                sair_sistema = 1
 
         # Cálculo de de renda bruta e lucro, com salvamento direto no arquivo csv
         case "6":
@@ -151,9 +192,17 @@ while (sair_sistema == 2):
             pagamentos = [['$', 0, 0], ['X', 0, 0], ['D', 0, 0],
                           ['C', 0, 0], ['T', 0, 0], ['F', 0, 0]]
 
-            vendas = open('vendas.csv', encoding='utf-8')
-            vendas_reader = csv.reader(
-                vendas, delimiter=';', lineterminator='\r')
+            try:
+                vendas = open('vendas.csv', encoding='utf-8')
+                vendas_reader = csv.reader(
+                    vendas, delimiter=';', lineterminator='\r')
+
+            except PermissionError as error:
+                print("Erro de I/O")
+                sair_sistema = 1
+            except:
+                print("Erro de I/O")
+                sair_sistema = 1
 
             for i in vendas_reader:
                 codigo_produto = int(i[2])
@@ -197,27 +246,42 @@ while (sair_sistema == 2):
             pagamentos_ordenados = sorted(
                 pagamentos, key=itemgetter(2), reverse=True)
 
-            with open("4-vendaspgto.csv", 'w', encoding='utf-8') as vendaspgto:
-                vendaspgto_writer = csv.writer(
-                    vendaspgto, delimiter=';', lineterminator='\r')
-                for p in pagamentos_ordenados:
-                    vendaspgto_writer.writerow(
-                        [p[0], p[1], p[2]])
+            try:
+                with open("4-vendaspgto.csv", 'w', encoding='utf-8') as vendaspgto:
+                    vendaspgto_writer = csv.writer(
+                        vendaspgto, delimiter=';', lineterminator='\r')
+                    for p in pagamentos_ordenados:
+                        vendaspgto_writer.writerow(
+                            [p[0], p[1], p[2]])
+
+            except PermissionError as error:
+                print("Erro de I/O")
+                sair_sistema = 1
+            except:
+                print("Erro de I/O")
+                sair_sistema = 1
 
         # Cálculo de estoque restante dos produtos após as vendas
         case "7":
 
-            vendas = open('vendas.csv', 'r', encoding='utf-8')
-            produtos = open('produtos.csv', 'r', encoding='utf-8')
-            vendas_reader = csv.reader(
-                vendas, delimiter=';')
-            produtos_reader = csv.reader(
-                produtos, delimiter=';')
+            try:
+                vendas = open('vendas.csv', 'r', encoding='utf-8')
+                produtos = open('produtos.csv', 'r', encoding='utf-8')
+                vendas_reader = csv.reader(
+                    vendas, delimiter=';')
+                produtos_reader = csv.reader(
+                    produtos, delimiter=';')
+            except PermissionError as error:
+                print("Erro de I/O")
+                sair_sistema = 1
+            except:
+                print("Erro de I/O")
+                sair_sistema = 1
 
             lista_produtos = []
 
             for p in produtos_reader:
-                lista_produtos.append([p[0], p[1], int(p[3])])
+                lista_produtos.append([p[0], p[1], int(p[3]), int(p[2])])
 
             for v in vendas_reader:
                 for p in lista_produtos:
@@ -227,14 +291,31 @@ while (sair_sistema == 2):
             # Ordenando conforme descrição
             lista_ordenada = sorted(lista_produtos, key=itemgetter(1))
 
-            with open("5-estoque.csv", 'a', encoding='utf-8') as estoques:
-                estoques_writer = csv.writer(estoques,
-                                             delimiter=';', lineterminator='\r')
-                for prod in lista_ordenada:
-                    estoques_writer.writerow([prod[0], prod[1], prod[2]])
+            try:
+                with open("5-estoque.csv", 'w', encoding='utf-8') as estoques:
+                    estoques_writer = csv.writer(estoques,
+                                                 delimiter=';', lineterminator='\r')
+                    for prod in lista_ordenada:
+                        if prod[2] <= prod[3]:
+                            estoques_writer.writerow(
+                                [prod[0], prod[1], prod[2], 'COMPRAR MAIS'])
+                        else:
+                            estoques_writer.writerow(
+                                [prod[0], prod[1], prod[2], ' '])
 
-            vendas.close()
-            produtos.close()
+            except PermissionError as error:
+                print("Erro de I/O")
+                sair_sistema = 1
+            except:
+                print("Erro de I/O")
+                sair_sistema = 1
+
+            try:
+                vendas.close()
+                produtos.close()
+            except:
+                sair_sistema=2
+
         # Sair do sistema
         case "8":
             sair_sistema = 1
